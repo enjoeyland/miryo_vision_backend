@@ -4,7 +4,9 @@ import com.example.miryo_vision_backend.service.project.dto.ProjectCodeNameDto;
 import com.example.miryo_vision_backend.entity.QProject;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ProjectPredicate {
     public static Predicate search(ProjectCodeNameDto projectCodeNameDto) {
         QProject project = QProject.project;
