@@ -11,29 +11,15 @@ import lombok.*;
 @ToString
 public class ProjectCodeNameDto {
 
-    private String customerClassificationCodeName;
+    private String customerClassification;
 
-    private String yearCodeName;
+    private String year;
 
     private String customerCompanyName;
 
-    private String genderCodeName;
+    private String gender;
 
-    private String seasonCodeName;
+    private String season;
 
-    private String productTypeCodeName;
-
-//   fixme: 타입이 다른데 어떻게 해야할지 모르겠다.
-//    고려1: 한정된 데이터
-//    고려2: service 쪽에서 하는 게 좋은지
-//    고려3: modelmapper가 알아서 해줄지 확인(즉 기존 방식 유지가능??)
-   public Project toEntity() {
-//       return new Project(customerClassificationCode,
-//               yearCode,
-//               customerCo,
-//               genderCode,
-//               seasonCode,
-//               productTypeCode);
-       return new Project();
-   }
+    private String productType;
 }

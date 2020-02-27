@@ -1,5 +1,6 @@
 package com.example.miryo_vision_backend.controller;
 
+import com.example.miryo_vision_backend.dto.for_controller.TableWithFilterDto;
 import com.example.miryo_vision_backend.service.project.dto.ProjectCodeNameDto;
 import com.example.miryo_vision_backend.service.project.dto.ProjectSelectDataDto;
 import com.example.miryo_vision_backend.dto.for_controller.ResponseDto;
@@ -51,4 +52,13 @@ public class ProjectController {
         List<ProjectCodeNameDto> projectCodeNameDtoList = this.projectService.search(projectCodeNameDto);
         return new ResponseDto(true, projectCodeNameDtoList);
     }
+
+    @RequestMapping(value = "/projectRecord/queryProjects", method = RequestMethod.POST)
+    public ResponseDto getProject2(@RequestBody ProjectCodeNameDto projectCodeNameDto) {
+        List<ProjectCodeNameDto> projectCodeNameDtoList = this.projectService.search(projectCodeNameDto);
+
+        TableWithFilterDto tableWithFilterDto = new TableWithFilterDto(projectCodeNameDtoList,"hihi");
+        return new ResponseDto(true,  tableWithFilterDto);
+    }
+
 }

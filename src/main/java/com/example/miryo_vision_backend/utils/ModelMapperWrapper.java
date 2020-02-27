@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class ObjectMapper {
+public class ModelMapperWrapper {
 
     private static ModelMapper modelMapper;
 
@@ -19,14 +19,14 @@ public class ObjectMapper {
      */
     static {
         modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setAmbiguityIgnored(true);
+//        modelMapper.getConfiguration().setAmbiguityIgnored(true);
 
     }
 
     /**
      * Hide from public usage.
      */
-    private ObjectMapper() {
+    private ModelMapperWrapper() {
     }
 
     /**

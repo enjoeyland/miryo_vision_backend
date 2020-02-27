@@ -1,7 +1,10 @@
 package com.example.miryo_vision_backend.utils;
 
+import com.example.miryo_vision_backend.entity.CustomerCompany;
+import com.example.miryo_vision_backend.service.project.dto.ProjectCodeDto;
 import com.example.miryo_vision_backend.service.project.dto.ProjectCodeNameDto;
 import com.example.miryo_vision_backend.entity.Project;
+import com.example.miryo_vision_backend.service.project.enums.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +28,7 @@ class OrderDto {
     String billingCity;
 }
 
-class ObjectMapperTest {
+class ModelMapperWrapperTest {
 
 
     @Test
@@ -65,7 +68,7 @@ class ObjectMapperTest {
 
         ModelMapper modelMapper = new ModelMapper();
 //        OrderDto orderDTO = modelMapper.map(order, OrderDto.class); // 됨
-        OrderDto orderDTO = ObjectMapper.map(order, OrderDto.class);
+        OrderDto orderDTO = ModelMapperWrapper.map(order, OrderDto.class);
 
         assertEquals(order.getCustomer().getName().getFirstName(), orderDTO.getCustomerFirstName());
         assertEquals(order.getCustomer().getName().getLastName(), orderDTO.getCustomerLastName());
@@ -80,20 +83,34 @@ class ObjectMapperTest {
         //                이러한 에러가 난다.
         //       해결방안: modelMapper.getConfiguration().setAmbiguityIgnored(true);
 
-        ProjectCodeNameDto projectCodeNameDto = new ProjectCodeNameDto();
-        projectCodeNameDto.setCustomerClassificationCodeName("금융권");
-        projectCodeNameDto.setYearCodeName("2018");
-        projectCodeNameDto.setCustomerCompanyName("한국가스공사");
-        projectCodeNameDto.setGenderCodeName("공용");
-        projectCodeNameDto.setProductTypeCodeName("근무복");
-        projectCodeNameDto.setSeasonCodeName("하계");
-        Project project = ObjectMapper.map(projectCodeNameDto, Project.class);
 
-        assertThat(project.getCustomerClassificationCodeName(), is(projectCodeNameDto.getCustomerClassificationCodeName()));
-        assertThat(project.getCustomerCompany().getName(), is(projectCodeNameDto.getCustomerCompanyName()));
-        assertThat(project.getGenderCodeName(), is(projectCodeNameDto.getGenderCodeName()));
-        assertThat(project.getSeasonCodeName(), is(projectCodeNameDto.getSeasonCodeName()));
-        assertThat(project.getProductTypeCodeName(), is(projectCodeNameDto.getProductTypeCodeName()));
-        assertThat(project.getYearCodeName(), is(projectCodeNameDto.getYearCodeName()));
+        // hint: 문제상황: "2018"->Y2018 -> enum 첫번째 화살표가 자동으로 안된다.
+        //                아마 되게 하려면 하나하나 연결시켜야 할것이다.
+        //                근데 modelmapper는 연결시키기 어렵다.
+        //       해결방안: mapstruct을 사용한다.
+
+        // hint: 1.modelmapper는 이름으로 mapping하는 strategy에 강점이 있다.
+        //       2.enum->Y2018->"2018"로는 자동으로 할수 있다.
+
+        Project project = new Project();
+        project.setCustomerClassification(CustomerClassificationEnum.GENERAL);
+        project.setYear(YearEnum.Y2018);
+
+        CustomerCompany customerCompany = new CustomerCompany();
+        customerCompany.setId(2L);
+        customerCompany.setCode("02");
+
+        project.setCustomerCompany(customerCompany);
+        project.setGender(GenderEnum.UNISEX);
+        project.setProductType(ProductTypeEnum.WORK);
+        project.setSeason(SeasonEnum.SUMMER);
+        ProjectCodeDto projectCodeDto = ModelMapperWrapper.map(project, ProjectCodeDto.class);
+
+        assertThat(projectCodeDto.getCustomerClassificationCode(), is(String.valueOf(project.getCustomerClassification().getCode())));
+        assertThat(projectCodeDto.getCustomerCompanyCode(), is(String.valueOf(project.getCustomerCompany().getCode())));
+        assertThat(projectCodeDto.getGenderCode(), is(String.valueOf(project.getGender().getCode())));
+        assertThat(projectCodeDto.getSeasonCode(), is(String.valueOf(project.getSeason().getCode())));
+        assertThat(projectCodeDto.getProductTypeCode(), is(String.valueOf(project.getProductType().getCode())));
+        assertThat(projectCodeDto.getYearCode(), is(String.valueOf(project.getYear().getCode())));
     }
 }

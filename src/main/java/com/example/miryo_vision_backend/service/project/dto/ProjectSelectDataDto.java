@@ -13,23 +13,26 @@ import java.util.List;
 @Setter
 @ToString
 public class ProjectSelectDataDto {
-    @JsonProperty(value = "customerClassificationCode")
+    @JsonProperty(value = "customerClassification")
     private List<CodeDto> customerClassificationCode;
 
-    @JsonProperty(value = "yearCode")
+    @JsonProperty(value = "year")
     private List<CodeDto> yearCode;
 
-
-    @JsonProperty(value = "customerNameCode")
+    @JsonProperty(value = "customerCompany")
     private List<CodeDto> customerCompany;
 
-    @JsonProperty(value = "genderCode")
+    @JsonProperty(value = "gender")
     private List<CodeDto> genderCode;
 
-    @JsonProperty(value = "seasonCode")
+    @JsonProperty(value = "season")
     private List<CodeDto> seasonCode;
 
-    @JsonProperty(value = "productTypeCode")
+    @JsonProperty(value = "productType")
     private List<CodeDto> productTypeCode;
 
+
+    private List<String> businessDepartTeam;
+
+    private List<String> winStatus; // 진행중, win lose
 }

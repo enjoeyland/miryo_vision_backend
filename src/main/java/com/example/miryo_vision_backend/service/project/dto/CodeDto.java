@@ -10,10 +10,10 @@ import lombok.*;
 @Setter
 @ToString
 public class CodeDto {
-    @JsonProperty(value = "text")
+    @JsonProperty(value = "value")
     protected String name;
 
-    @JsonProperty(value = "value")
+    @JsonProperty(value = "code")
     protected String code;
 
     @JsonProperty(value = "key")

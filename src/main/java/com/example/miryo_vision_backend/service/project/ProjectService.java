@@ -1,15 +1,16 @@
 package com.example.miryo_vision_backend.service.project;
 
 
+import com.example.miryo_vision_backend.entity.CustomerCompany;
 import com.example.miryo_vision_backend.service.project.dto.CodeDto;
 import com.example.miryo_vision_backend.service.project.dto.ProjectCodeNameDto;
 import com.example.miryo_vision_backend.service.project.dto.ProjectSelectDataDto;
 import com.example.miryo_vision_backend.entity.Project;
 import com.example.miryo_vision_backend.repository.CustomerCompanyRepository;
 import com.example.miryo_vision_backend.repository.ProjectRepository;
-import com.example.miryo_vision_backend.repository.project_select.*;
 import com.example.miryo_vision_backend.service.CrudService;
-import com.example.miryo_vision_backend.utils.ObjectMapper;
+import com.example.miryo_vision_backend.service.project.enums.*;
+import com.example.miryo_vision_backend.utils.ModelMapperWrapper;
 import com.querydsl.core.types.Predicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -24,34 +26,15 @@ import java.util.List;
 
 @Service
 public class ProjectService implements CrudService<ProjectCodeNameDto> {
-    private CustomerClassificationCodeRepository customerClassificationCodeRepository;
-    private YearCodeRepository          yearCodeRepository;
-    private CustomerCompanyRepository   customerCompanyRepository;
-    private GenderCodeRepository        genderCodeRepository;
-    private SeasonCodeListRepository    seasonCodeListRepository;
-    private ProductTypeCodeRepository   productTypeCodeRepository;
-
     private ProjectRepository           projectRepository;
-
     private ProjectEntityConverter  projectEntityConverter;
 
     private Logger logger = LoggerFactory.getLogger(ProjectService.class);
 
 
     @Autowired
-    public ProjectService(CustomerClassificationCodeRepository customerClassificationCodeRepository,
-                          YearCodeRepository yearCodeRepository,
-                          CustomerCompanyRepository customerCompanyRepository,
-                          GenderCodeRepository genderCodeRepository,
-                          SeasonCodeListRepository seasonCodeListRepository,
-                          ProductTypeCodeRepository productTypeCodeRepository,
-                          ProjectRepository projectRepository, ProjectEntityConverter projectEntityConverter, ProjectInfoCreator projectInfoCreator) {
-        this.customerClassificationCodeRepository = customerClassificationCodeRepository;
-        this.yearCodeRepository = yearCodeRepository;
-        this.customerCompanyRepository = customerCompanyRepository;
-        this.genderCodeRepository = genderCodeRepository;
-        this.seasonCodeListRepository = seasonCodeListRepository;
-        this.productTypeCodeRepository = productTypeCodeRepository;
+    public ProjectService(ProjectRepository projectRepository,
+                          ProjectEntityConverter projectEntityConverter) {
         this.projectRepository = projectRepository;
         this.projectEntityConverter = projectEntityConverter;
     }
@@ -67,7 +50,9 @@ public class ProjectService implements CrudService<ProjectCodeNameDto> {
 
     @Override
     public void createAll(List<ProjectCodeNameDto> projectCodeNameDtoList) {
-
+        for (ProjectCodeNameDto dto:projectCodeNameDtoList) {
+            create(dto);
+        }
     }
 
 
@@ -104,15 +89,14 @@ public class ProjectService implements CrudService<ProjectCodeNameDto> {
 
     public ProjectSelectDataDto getProjectSelectData() {
 
-        ProjectSelectDataDto projectSelectDataDto = new ProjectSelectDataDto();
-        projectSelectDataDto.setCustomerClassificationCode(ObjectMapper.mapAll(this.customerClassificationCodeRepository.findAll(), CodeDto.class));
-        projectSelectDataDto.setYearCode(ObjectMapper.mapAll(this.yearCodeRepository.findAll(), CodeDto.class));
-        projectSelectDataDto.setCustomerCompany(ObjectMapper.mapAll(this.customerCompanyRepository.findAll(), CodeDto.class));
-        projectSelectDataDto.setGenderCode(ObjectMapper.mapAll(this.genderCodeRepository.findAll(), CodeDto.class));
-        projectSelectDataDto.setSeasonCode(ObjectMapper.mapAll(this.seasonCodeListRepository.findAll(), CodeDto.class));
-        projectSelectDataDto.setProductTypeCode(ObjectMapper.mapAll(this.productTypeCodeRepository.findAll(), CodeDto.class));
+        ModelMapperWrapper.mapAll(Arrays.asList(SeasonEnum.values()), CodeDto.class);
 
-        return projectSelectDataDto;
+        return projectEntityConverter.toProjectSelectDataDto(
+                CustomerClassificationEnum.values(),
+                YearEnum.values(),
+                SeasonEnum.values(),
+                GenderEnum.values(),
+                ProductTypeEnum.values());
     }
 
 }

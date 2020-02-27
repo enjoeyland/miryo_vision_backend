@@ -1,7 +1,6 @@
 package com.example.miryo_vision_backend.entity;
 
-import com.example.miryo_vision_backend.SeasonAttributeConverter;
-import com.example.miryo_vision_backend.SeasonEnum;
+import com.example.miryo_vision_backend.service.project.enums.*;
 import lombok.*;
 
 import javax.persistence.*;
@@ -74,45 +73,18 @@ public class Project {
 //    private 직원 지원부_담당직원;
 
 
+    @Enumerated(EnumType.STRING)
+    private CustomerClassificationEnum customerClassification;
 
-    private String customerClassificationCodeName;
+    @Enumerated(EnumType.STRING)
+    private YearEnum year;
 
-    private String yearCodeName;
+    @Enumerated(EnumType.STRING)
+    private GenderEnum gender;
 
+    @Enumerated(EnumType.STRING)
+    private SeasonEnum season;
 
-
-    private String genderCodeName;
-
-    private String seasonCodeName;
-//    @Convert(converter = SeasonAttributeConverter.class)
-//    private SeasonEnum season;
-
-
-    private String productTypeCodeName;
-
-
-//    public Project(String customerClassificationCodeName,
-//                   String yearCodeName,
-//                   CustomerCompany customerCompanyCode,
-//                   String genderCodeName,
-//                   String seasonCodeName,
-//                   String productTypeCodeName){
-//        this.customerClassificationCodeName = customerClassificationCodeName;
-//        this.yearCodeName = yearCodeName;
-//        this.customerCompany = customerCompanyCode;
-//        this.genderCodeName = genderCodeName;
-//        this.seasonCodeName = seasonCodeName;
-//        this.productTypeCodeName = productTypeCodeName;
-//        this.barcode = this.generateProjectBarcode();
-//    }
-
-//    public String generateProjectBarcode() {
-//        return this.customerClassificationCodeName +
-//                this.yearCodeName +
-//                this.customerCompany.code +
-//                this.genderCodeName +
-//                this.seasonCodeName +
-//                this.productTypeCodeName +
-//                String.format("%03d", this.id).substring(0, 3);
-//    }
+    @Enumerated(EnumType.STRING)
+    private ProductTypeEnum productType;
 }

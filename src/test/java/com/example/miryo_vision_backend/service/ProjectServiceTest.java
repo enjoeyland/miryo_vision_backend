@@ -4,7 +4,7 @@ import com.example.miryo_vision_backend.service.project.dto.ProjectCodeNameDto;
 import com.example.miryo_vision_backend.entity.Project;
 import com.example.miryo_vision_backend.repository.ProjectRepository;
 import com.example.miryo_vision_backend.service.project.ProjectService;
-import com.example.miryo_vision_backend.utils.ObjectMapper;
+import com.example.miryo_vision_backend.utils.ModelMapperWrapper;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ class ProjectServiceTest {
     @Test
     void getAllProjects() {
         List<Project> projectList = projectRepository.findAll();
-        List<ProjectCodeNameDto> expectedProjectCodeNameDtoList = ObjectMapper.mapAll(projectList, ProjectCodeNameDto.class);
+        List<ProjectCodeNameDto> expectedProjectCodeNameDtoList = ModelMapperWrapper.mapAll(projectList, ProjectCodeNameDto.class);
         List<ProjectCodeNameDto> testingProjectCodeNameDtoList = projectService.getAll();
 
         // hint: org.hibernate.LazyInitializationException: failed to lazily initialize a collection of role: entity.Project.itemList, could not initialize proxy - no Session
@@ -46,16 +46,12 @@ class ProjectServiceTest {
     @Test
     void search() {
         ProjectCodeNameDto projectCodeNameDto = new ProjectCodeNameDto();
-        projectCodeNameDto.setYearCodeName("2018");
+        projectCodeNameDto.setYear("2019");
         projectCodeNameDto.setCustomerCompanyName("한국가스공사");
         List<ProjectCodeNameDto> testingProjectCodeNameDtoList = projectService.search(projectCodeNameDto);
-        ProjectCodeNameDto expectedProjectCodeNameDto = ObjectMapper.map(projectRepository.findById(1L).get(), ProjectCodeNameDto.class);
+        ProjectCodeNameDto expectedProjectCodeNameDto = ModelMapperWrapper.map(projectRepository.findById(29L).get(), ProjectCodeNameDto.class);
 
         assertThat(testingProjectCodeNameDtoList.get(0).toString(), is(expectedProjectCodeNameDto.toString()));
     }
 
-    @Test
-    void timestamp() {
-        logger.info(new java.sql.Timestamp(new java.util.Date().getTime()).toString());
-    }
 }
