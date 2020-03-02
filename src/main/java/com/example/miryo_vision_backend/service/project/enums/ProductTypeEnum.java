@@ -8,7 +8,7 @@ import java.util.Map;
 @Getter
 public enum ProductTypeEnum {
 
-   OFFICE("근무목",'O'),
+   OFFICE("근무복",'O'),
    WORK("작업복",'W'),
    SUMMER("성하복",'S'),
    HEAVY("방한복",'H'),

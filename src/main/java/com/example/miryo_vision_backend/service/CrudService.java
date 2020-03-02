@@ -5,13 +5,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public interface CrudService<T> {
-    void create(T t);
-    void createAll(List<T> tList);
-    void update(T t);
-    void updateAll(List<T> tList);
-    void delete(T t);
-    void deleteAll(List<T> tList);
-    List<T> search(T t);
-    List<T> getAll();
+public interface CrudService<Response,CreatRequest,UpdateRequest,DeleteRequest,SearchRequest> {
+    void create(CreatRequest request);
+    void createAll(List<CreatRequest> requestList);
+    void update(UpdateRequest request);
+    void updateAll(List<UpdateRequest> requestList);
+    void delete(DeleteRequest request);
+    void deleteAll(List<DeleteRequest> requestList);
+    List<Response> search(SearchRequest request);
+    List<Response> getAll();
 }

@@ -10,16 +10,10 @@ import lombok.*;
 @Setter
 @ToString
 public class ProjectCodeNameDto {
-
     private String customerClassification;
-
     private String year;
-
-    private String customerCompanyName;
-
     private String gender;
-
     private String season;
-
     private String productType;
+
 }

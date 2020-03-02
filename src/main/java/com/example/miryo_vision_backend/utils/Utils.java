@@ -13,7 +13,6 @@ public class Utils {
         return new String(chArr);
     }
 
-
     public static boolean isNotNull(Object o) {
         return o!= null;
     }

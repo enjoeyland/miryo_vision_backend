@@ -13,7 +13,4 @@ public interface ProjectRepository extends JpaRepository<Project, Long>, Queryds
     @Override
     @EntityGraph(value = "joinCustomerCompany", type = EntityGraph.EntityGraphType.LOAD)
     List<Project> findAll(Predicate predicate);
-
-
-
 }
