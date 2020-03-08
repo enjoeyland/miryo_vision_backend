@@ -12,8 +12,10 @@ import java.util.stream.IntStream;
 @Component
 @Mapper(componentModel="spring", uses = {Converter.class})
 public abstract class ControllerDtoConverter {
-
-    @Mapping(source = "name", target = "disassemble", qualifiedByName = "toDisassemble")
+    @Mappings({
+            @Mapping(source = "name", target = "name"),
+            @Mapping(source = "name", target = "disassemble", qualifiedByName = "toDisassemble")
+    })
     public abstract UiDto.Option.KoreanSearchable toUiOption(String name, Object sort, Object note);
 
     @Mappings({
