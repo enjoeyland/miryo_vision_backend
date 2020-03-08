@@ -28,7 +28,7 @@ public abstract class ControllerDtoConverter {
 
     @Mappings({
             @Mapping(source = "name",target = "name"),
-            @Mapping(target = "note",expression = "java(name)"), // todo: Object type로 Mapping이 안됨(stackoverflow에 질문함)
+            @Mapping(source = "name",target = "note", qualifiedByName = "toNote"), //hint : https://stackoverflow.com/questions/60586737/mapstruct-error-occur-when-using-target-field-type-as-object/60588174#60588174
             @Mapping(source = "name",target = "disassemble",qualifiedByName = "toDisassemble")
     })
     public abstract UiDto.Option.Filterable toUiFilterableOption(String name);
@@ -50,5 +50,8 @@ public abstract class ControllerDtoConverter {
                 .forEach(i -> listWrapper.getList().get(i).setListIndex(i + 1));
     }
 
-
+    @Named("toNote")
+    protected Object toNote(String name) {
+        return name;
+    }
 }
