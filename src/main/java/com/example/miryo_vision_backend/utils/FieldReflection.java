@@ -1,42 +1,13 @@
 package com.example.miryo_vision_backend.utils;
 
-import com.example.miryo_vision_backend.controller.dto.BasicUiDto;
-import com.example.miryo_vision_backend.dto.tmp.ExcelDataDto;
+import com.example.miryo_vision_backend.controller.dto.UiDto;
+import com.example.miryo_vision_backend.utils.dto.tmp.ExcelDataDto;
 
 import java.lang.reflect.Field;
 import java.util.*;
 
 public class FieldReflection {
-    // filter에 적용
-    public static <T,S extends BasicUiDto> Map<String, Set<S>> eachFieldToSet(List<T> TList, Class<S> targetC){
-        if (TList == null) {
-            return null;
-        }
-        Map<String,Set<S>> map = new HashMap<>();
-
-        Class<?> c = TList.get(0).getClass();
-        List<Field> fieldList = getFieldListFromParentToChild(c);
-
-        for (Field f: fieldList) {
-            f.setAccessible(true);
-            HashSet<S> s = new HashSet<>();
-            for (T t:TList) {
-                try {
-                    String data = (String) f.get(t);
-                    S dto = targetC.newInstance();
-                    dto.setName(data);
-                    dto.setNote(data);
-                    s.add(dto);
-                } catch (IllegalAccessException | InstantiationException e) {
-                    e.printStackTrace();
-                }
-            }
-            map.put(f.getName() + "Filter", s);
-        }
-        return map;
-    }
-
-
+    // 사용하지 말 것  hint : 상속을 잘 못 사용하는 가능성이 높다.
     public static <T> List<Field> getFieldListFromParentToChild(Class<T> c) {
         List<Class> classList = getClassListFromParentToChild(c);
 
@@ -47,6 +18,7 @@ public class FieldReflection {
         return fields;
     }
 
+    // 사용하지 말 것  hint : 상속을 잘 못 사용하는 가능성이 높다.
     public static <T> List<Class> getClassListFromParentToChild(Class<T> c) {
         List<Class> classList = new ArrayList<>();
 

@@ -1,48 +1,46 @@
 package com.example.miryo_vision_backend.service.project;
 
 
-import com.example.miryo_vision_backend.controller.dto.CodeDto;
-import com.example.miryo_vision_backend.service.project.dto.*;
 import com.example.miryo_vision_backend.entity.Project;
 import com.example.miryo_vision_backend.repository.ProjectRepository;
 import com.example.miryo_vision_backend.service.CrudService;
-import com.example.miryo_vision_backend.service.project.enums.*;
-import com.example.miryo_vision_backend.utils.ModelMapperWrapper;
 import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-import java.util.Arrays;
 import java.util.List;
 
 
 //todo : 모델 맵핑이 무언가 잘못됨
 
 @Service
-public class ProjectService implements CrudService<ProjectResponseDto, ProjectCreateRequestDto,ProjectRequestDto,ProjectRequestDto, ProjectSearchRequestDto> {
-    private ProjectRepository           projectRepository;
+public class ProjectService implements CrudService<ProjectDto.Response, ProjectDto.Request.Create,ProjectDto.Request.Update,ProjectDto.Request.Delete, ProjectDto.Request.Search> {
+    private ProjectRepository       projectRepository;
     private ProjectEntityConverter  projectEntityConverter;
+    private ProjectInfoCreator      projectInfoCreator;
 
     @Autowired
     public ProjectService(ProjectRepository projectRepository,
-                          ProjectEntityConverter projectEntityConverter) {
+                          ProjectEntityConverter projectEntityConverter, ProjectInfoCreator projectInfoCreator) {
         this.projectRepository = projectRepository;
         this.projectEntityConverter = projectEntityConverter;
+        this.projectInfoCreator = projectInfoCreator;
     }
 
 
     @Override
-    public void create(ProjectCreateRequestDto projectCreateRequestDto) {
+    public void create(ProjectDto.Request.Create projectCreateRequest) {
         // todo: 이벤트 처리
-        Project project = projectEntityConverter.toCompleteEntity(projectCreateRequestDto);
+        Project project = projectEntityConverter.toSavableEntity(projectCreateRequest);
+        project = this.projectRepository.save(project);
+        projectEntityConverter.updateToCompleteEntity(project);
         this.projectRepository.save(project);
-
     }
 
     @Override
-    public void createAll(List<ProjectCreateRequestDto> projectCreateRequestDto) {
-        for (ProjectCreateRequestDto dto: projectCreateRequestDto) {
+    public void createAll(List<ProjectDto.Request.Create> projectCreateRequest) {
+        for (ProjectDto.Request.Create dto: projectCreateRequest) {
             create(dto);
         }
     }
@@ -50,46 +48,41 @@ public class ProjectService implements CrudService<ProjectResponseDto, ProjectCr
 
     // todo: JPA에서 @ID를 보고 update를 해줄지 확인 필요
     @Override
-    public void update(ProjectRequestDto projectRequestDto) {
+    public void update(ProjectDto.Request.Update projectUpdateRequest) {
 
     }
 
     @Override
-    public void updateAll(List<ProjectRequestDto> projectRequestDto) {
+    public void updateAll(List<ProjectDto.Request.Update> projectUpdateRequest) {
 
     }
 
 
     @Override
-    public void delete(ProjectRequestDto projectRequestDto) {
+    public void delete(ProjectDto.Request.Delete projectDeleteRequest) {
     }
 
     @Override
-    public void deleteAll(List<ProjectRequestDto> projectRequestDto) {
+    public void deleteAll(List<ProjectDto.Request.Delete> projectDeleteRequest) {
     }
 
     @Override
-    public List<ProjectResponseDto> search(ProjectSearchRequestDto projectSearchRequestDto) {
-        Predicate predicate = ProjectPredicate.search(projectSearchRequestDto);
-        return projectEntityConverter.toProjectDto(projectRepository.findAll(predicate));
+    public List<ProjectDto.Response> search(ProjectDto.Request.Search projectSearchRequest) {
+        Predicate predicate = ProjectPredicate.search(projectSearchRequest);
+        return projectEntityConverter.toProjectResponse(projectRepository.findAll(predicate));
     }
 
     @Override
-    public List<ProjectResponseDto> getAll() {
-        return this.projectEntityConverter.toProjectDto(this.projectRepository.findAll());
+    public List<ProjectDto.Response> getAll() {
+        return this.projectEntityConverter.toProjectResponse(this.projectRepository.findAll());
     }
 
-    public ProjectCreateInitDataDto getProjectCreateInitData() {
-
-        ModelMapperWrapper.mapAll(Arrays.asList(SeasonEnum.values()), CodeDto.class);
-
-        return projectEntityConverter.toProjectCreateInitDataDto();
+    public ProjectDto.UiSelect.Create getProjectCreateInitData() {
+        return projectEntityConverter.toUiSelectForProjectCreate(projectInfoCreator.getUiSelectForProject());
     }
 
-    public ProjectSearchInitDataDto getProjectSearchInitData() {
-
-
-        return projectEntityConverter.toProjectSearchInitDataDto();
+    public ProjectDto.UiSelect.Search getProjectSearchInitData() {
+        return projectEntityConverter.toUiSelectForProjectSearch(projectInfoCreator.getUiSelectForProject());
     }
 
 }

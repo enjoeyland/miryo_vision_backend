@@ -1,5 +1,7 @@
 package com.example.miryo_vision_backend.service.project.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -16,6 +18,7 @@ public enum ProductTypeEnum {
    WELL_BEING("복지품",'B');
 
 
+    @JsonValue
     private String name;
     private char code;
 
@@ -32,6 +35,7 @@ public enum ProductTypeEnum {
         }
     }
 
+    @JsonCreator
     public static ProductTypeEnum findByName(String name){
         return BY_NAME.get(name);
     }

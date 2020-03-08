@@ -1,5 +1,7 @@
 package com.example.miryo_vision_backend.service.project.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -11,6 +13,7 @@ public enum CustomerClassificationEnum {
     BANK("금융권",'B'),
     GENERAL("일반사",'G');
 
+    @JsonValue
     private String name;
     private char code;
 
@@ -26,7 +29,7 @@ public enum CustomerClassificationEnum {
             BY_NAME.put(e.name, e);
         }
     }
-
+    @JsonCreator
     public static CustomerClassificationEnum findByName(String name){
         return BY_NAME.get(name);
     }

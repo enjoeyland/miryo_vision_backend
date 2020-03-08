@@ -5,7 +5,7 @@ import lombok.Getter;
 
 
 @Getter
-public class ResponseDto {
+public class ServerResponse {
 
     private String msg; //에러나 그냥 알리고 싶은 내용 보내기
 
@@ -16,13 +16,13 @@ public class ResponseDto {
 
     private Object data; // 실패시: null
 
-    public ResponseDto(Boolean isSuccess, Object data, String msg) {
+    public ServerResponse(Boolean isSuccess, Object data, String msg) {
         this.isSuccess = isSuccess;
         this.data = data;
         this.msg = msg;
     }
 
-    public ResponseDto(Boolean isSuccess, Object data) {
+    public ServerResponse(Boolean isSuccess, Object data) {
         this.isSuccess = isSuccess;
         this.data = data;
         this.msg = "";

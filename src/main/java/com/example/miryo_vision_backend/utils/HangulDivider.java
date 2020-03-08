@@ -44,11 +44,13 @@ public class HangulDivider {
                 if(jon != 0x0000) {
                     stringBuilder.append(JON[jon]);
                 }
+            } else {
+                stringBuilder.append(Syllable);
             }
         }
 
-        String dividedStr = stringBuilder.toString();
-        return dividedStr.equals("") ? str : dividedStr;
+        return stringBuilder.toString();
+
     }
 
 

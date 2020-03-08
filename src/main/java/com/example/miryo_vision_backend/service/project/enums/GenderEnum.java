@@ -1,5 +1,7 @@
 package com.example.miryo_vision_backend.service.project.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -12,6 +14,7 @@ public enum GenderEnum {
     FEMALE("여성", 'F'),
     UNISEX("공용", 'U');
 
+    @JsonValue
     private String name;
     private char code;
 
@@ -29,6 +32,7 @@ public enum GenderEnum {
         }
     }
 
+    @JsonCreator
     public static GenderEnum findByName(String name){
         return BY_NAME.get(name);
     }

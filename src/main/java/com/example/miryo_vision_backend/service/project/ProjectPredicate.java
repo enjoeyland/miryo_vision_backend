@@ -1,44 +1,41 @@
 package com.example.miryo_vision_backend.service.project;
 
-import com.example.miryo_vision_backend.service.project.dto.ProjectCodeNameDto;
 import com.example.miryo_vision_backend.entity.QProject;
-import com.example.miryo_vision_backend.service.project.dto.ProjectSearchRequestDto;
-import com.example.miryo_vision_backend.service.project.enums.*;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ProjectPredicate {
-    public static Predicate search(ProjectSearchRequestDto projectSearchRequestDto) {
+    public static Predicate search(ProjectDto.Request.Search projectSearchRequest) {
         QProject project = QProject.project;
         BooleanBuilder builder= new BooleanBuilder();
-        if (projectSearchRequestDto.getYear() != null) {
+        if (projectSearchRequest.getYear() != null) {
             builder.and(
                     project .year
-                            .eq(YearEnum.findByName(projectSearchRequestDto.getYear()))
+                            .eq(projectSearchRequest.getYear())
             );
-        } if (projectSearchRequestDto.getCustomerCompanyId() != null) {
-            builder.and(project.customerCompany.id.eq(Long.valueOf(projectSearchRequestDto.getCustomerCompanyId())));
-        } if (projectSearchRequestDto.getSeason() != null) {
+        } if (projectSearchRequest.getCustomerCompanyId() != null) {
+            builder.and(project.customerCompany.id.eq(projectSearchRequest.getCustomerCompanyId()));
+        } if (projectSearchRequest.getSeason() != null) {
             builder.and(
                     project .season
-                            .eq(SeasonEnum.findByName(projectSearchRequestDto.getSeason()))
+                            .eq(projectSearchRequest.getSeason())
             );
-        } if (projectSearchRequestDto.getCustomerClassification() != null) {
+        } if (projectSearchRequest.getCustomerClassification() != null) {
             builder.and(
                     project .customerClassification
-                            .eq(CustomerClassificationEnum.findByName(projectSearchRequestDto.getCustomerClassification()))
+                            .eq(projectSearchRequest.getCustomerClassification())
             );
-        } if (projectSearchRequestDto.getGender() != null) {
+        } if (projectSearchRequest.getGender() != null) {
             builder.and(
                     project .gender
-                            .eq(GenderEnum.findByName(projectSearchRequestDto.getGender()))
+                            .eq(projectSearchRequest.getGender())
             );
-        } if (projectSearchRequestDto.getProductType() != null) {
+        } if (projectSearchRequest.getProductType() != null) {
             builder.and(
                     project .productType
-                            .eq(ProductTypeEnum.findByName(projectSearchRequestDto.getProductType()))
+                            .eq(projectSearchRequest.getProductType())
             );
         }
         return builder;

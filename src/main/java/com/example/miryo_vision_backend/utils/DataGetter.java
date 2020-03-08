@@ -1,6 +1,6 @@
 package com.example.miryo_vision_backend.utils;
 
-import com.example.miryo_vision_backend.dto.tmp.ExcelDataDto;
+import com.example.miryo_vision_backend.utils.dto.tmp.ExcelDataDto;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import java.util.List;

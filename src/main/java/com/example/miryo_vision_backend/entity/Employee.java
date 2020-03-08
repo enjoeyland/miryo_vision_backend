@@ -1,7 +1,7 @@
 package com.example.miryo_vision_backend.entity;
 
-import com.example.miryo_vision_backend.service.employee.enums.DepartmentEnum;
-import com.example.miryo_vision_backend.service.employee.enums.JobDutyEnum;
+import com.example.miryo_vision_backend.service.employee.enums.Department;
+import com.example.miryo_vision_backend.service.employee.enums.JobDuty;
 import lombok.*;
 
 import javax.persistence.*;
@@ -44,12 +44,12 @@ public class Employee {
 
 
     @Enumerated(EnumType.STRING)
-    private DepartmentEnum department;
+    private Department department;
 
     private String jobTitle; //직급 :사원-대리~부장~사장
 
     @Enumerated(EnumType.STRING)
-    private JobDutyEnum jobDuty; // 직책: 팀장,지점장
+    private JobDuty jobDuty; // 직책: 팀장,지점장
 
 
     // todo: UI와 상관

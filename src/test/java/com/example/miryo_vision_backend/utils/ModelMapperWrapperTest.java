@@ -1,14 +1,9 @@
 package com.example.miryo_vision_backend.utils;
 
 import com.example.miryo_vision_backend.entity.CustomerCompany;
-import com.example.miryo_vision_backend.service.project.dto.ProjectCodeDto;
-import com.example.miryo_vision_backend.service.project.dto.ProjectCodeNameDto;
 import com.example.miryo_vision_backend.entity.Project;
 import com.example.miryo_vision_backend.service.project.enums.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 
@@ -26,6 +21,26 @@ class OrderDto {
     String customerLastName;
     String billingStreet;
     String billingCity;
+}
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
+class ProjectBarcode {
+
+    private String customerClassificationCode;
+
+    private String yearCode;
+
+    private String customerCompanyCode;
+
+    private String genderCode;
+
+    private String seasonCode;
+
+    private String productTypeCode;
 }
 
 class ModelMapperWrapperTest {
@@ -92,6 +107,8 @@ class ModelMapperWrapperTest {
         // hint: 1.modelmapper는 이름으로 mapping하는 strategy에 강점이 있다.
         //       2.enum->Y2018->"2018"로는 자동으로 할수 있다.
 
+
+
         Project project = new Project();
         project.setCustomerClassification(CustomerClassificationEnum.GENERAL);
         project.setYear(YearEnum.Y2018);
@@ -104,13 +121,13 @@ class ModelMapperWrapperTest {
         project.setGender(GenderEnum.UNISEX);
         project.setProductType(ProductTypeEnum.WORK);
         project.setSeason(SeasonEnum.SUMMER);
-        ProjectCodeDto projectCodeDto = ModelMapperWrapper.map(project, ProjectCodeDto.class);
+        ProjectBarcode projectBarcode = ModelMapperWrapper.map(project, ProjectBarcode.class);
 
-        assertThat(projectCodeDto.getCustomerClassificationCode(), is(String.valueOf(project.getCustomerClassification().getCode())));
-        assertThat(projectCodeDto.getCustomerCompanyCode(), is(String.valueOf(project.getCustomerCompany().getCode())));
-        assertThat(projectCodeDto.getGenderCode(), is(String.valueOf(project.getGender().getCode())));
-        assertThat(projectCodeDto.getSeasonCode(), is(String.valueOf(project.getSeason().getCode())));
-        assertThat(projectCodeDto.getProductTypeCode(), is(String.valueOf(project.getProductType().getCode())));
-        assertThat(projectCodeDto.getYearCode(), is(String.valueOf(project.getYear().getCode())));
+        assertThat(projectBarcode.getCustomerClassificationCode(), is(String.valueOf(project.getCustomerClassification().getCode())));
+        assertThat(projectBarcode.getCustomerCompanyCode(), is(String.valueOf(project.getCustomerCompany().getCode())));
+        assertThat(projectBarcode.getGenderCode(), is(String.valueOf(project.getGender().getCode())));
+        assertThat(projectBarcode.getSeasonCode(), is(String.valueOf(project.getSeason().getCode())));
+        assertThat(projectBarcode.getProductTypeCode(), is(String.valueOf(project.getProductType().getCode())));
+        assertThat(projectBarcode.getYearCode(), is(String.valueOf(project.getYear().getCode())));
     }
 }

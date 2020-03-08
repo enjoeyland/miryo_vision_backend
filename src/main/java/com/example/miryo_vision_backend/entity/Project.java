@@ -5,7 +5,6 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.sql.Timestamp; // hint: https://jistol.github.io/java/2017/02/03/jpa-datetype/
 import java.util.Date;
 import java.util.List;
 

@@ -1,5 +1,7 @@
 package com.example.miryo_vision_backend.service.project.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -35,7 +37,7 @@ public enum YearEnum {
     Y2039("2039",'Y'),
     ETC("-1",'Z');
 
-
+    @JsonValue
     private String name;
     private char code;
 
@@ -52,6 +54,7 @@ public enum YearEnum {
         }
     }
 
+    @JsonCreator
     public static YearEnum findByName(String name){
         return BY_NAME.get(name);
     }

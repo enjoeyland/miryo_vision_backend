@@ -1,5 +1,6 @@
 package com.example.miryo_vision_backend.service.project.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 
 import java.util.HashMap;

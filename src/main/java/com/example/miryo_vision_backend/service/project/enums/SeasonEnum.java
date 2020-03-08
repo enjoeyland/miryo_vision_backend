@@ -1,5 +1,7 @@
 package com.example.miryo_vision_backend.service.project.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -7,13 +9,13 @@ import java.util.Map;
 
 @Getter
 public enum SeasonEnum {
-
     SUMMER("하계", '1'),
     WINTER("동계", '2'),
     SPRING_AUTUMN("춘추", '3'),
     FOUR_SEASON("사계절", '4'),
     ETC("기타", '5');
 
+    @JsonValue
     private final String name;
     private final char code;
 
@@ -30,6 +32,7 @@ public enum SeasonEnum {
         }
     }
 
+    @JsonCreator
     public static SeasonEnum findByName(String name){
         return BY_NAME.get(name);
     }

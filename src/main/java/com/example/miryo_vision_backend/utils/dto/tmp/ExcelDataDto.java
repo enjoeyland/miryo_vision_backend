@@ -1,4 +1,4 @@
-package com.example.miryo_vision_backend.dto.tmp;
+package com.example.miryo_vision_backend.utils.dto.tmp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

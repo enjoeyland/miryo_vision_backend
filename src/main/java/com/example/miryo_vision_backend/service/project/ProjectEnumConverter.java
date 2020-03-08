@@ -1,8 +1,7 @@
 package com.example.miryo_vision_backend.service.project;
 
 import com.example.miryo_vision_backend.controller.ControllerDtoConverter;
-import com.example.miryo_vision_backend.controller.dto.BasicUiDto;
-import com.example.miryo_vision_backend.controller.dto.CodeDto;
+import com.example.miryo_vision_backend.controller.dto.UiDto;
 import com.example.miryo_vision_backend.service.project.enums.*;
 import lombok.NonNull;
 import org.mapstruct.*;
@@ -17,80 +16,40 @@ public abstract class ProjectEnumConverter {
     @Autowired
     ControllerDtoConverter controllerDtoConverter;
 
-
-    public CustomerClassificationEnum toCustomerClassificationEnum(String name) {
-        return CustomerClassificationEnum.findByName(name);
+    public UiDto.Option.WithCode toUiOptionWithCode(@NonNull SeasonEnum seasonEnum) {
+        return getUiOptionWithCode(seasonEnum.getName(), seasonEnum.ordinal(), seasonEnum.name(), seasonEnum.getCode());
     }
-    public GenderEnum toGenderEnum(String name) {
-        return GenderEnum.findByName(name);
+    public UiDto.Option.WithCode toUiOptionWithCode(@NonNull YearEnum yearEnum) {
+        return getUiOptionWithCode(yearEnum.getName(), yearEnum.ordinal(), yearEnum.name(), yearEnum.getCode());
     }
-    public ProductTypeEnum toProductTypeEnum(String name) {
-        return ProductTypeEnum.findByName(name);
+    public UiDto.Option.WithCode toUiOptionWithCode(@NonNull CustomerClassificationEnum customerClassificationEnum) {
+        return getUiOptionWithCode(customerClassificationEnum.getName(), customerClassificationEnum.ordinal(), customerClassificationEnum.name(), customerClassificationEnum.getCode());
     }
-    public SeasonEnum toSeasonEnum(String name) {
-        return SeasonEnum.findByName(name);
+    public UiDto.Option.WithCode toUiOptionWithCode(@NonNull GenderEnum genderEnum) {
+        return getUiOptionWithCode(genderEnum.getName(), genderEnum.ordinal(), genderEnum.name(), genderEnum.getCode());
     }
-    public YearEnum toYearEnum(String name) {
-        return YearEnum.findByName(name);
-    }
-
-    public String toName(CustomerClassificationEnum e){
-        return e.getName();
-    }
-    public String toName(GenderEnum e){
-        return e.getName();
-    }
-    public String toName(YearEnum e) {
-        return e.getName();
-    }
-    public String toName(SeasonEnum e) {
-        return e.getName();
-    }
-    public String toName(ProductTypeEnum e) {
-        return e.getName();
+    public UiDto.Option.WithCode toUiOptionWithCode(@NonNull ProductTypeEnum productTypeEnum) {
+        return getUiOptionWithCode(productTypeEnum.getName(), productTypeEnum.ordinal(), productTypeEnum.name(), productTypeEnum.getCode());
     }
 
-
-    public CodeDto toCodeDto(@NonNull SeasonEnum seasonEnum) {
-        return getCodeDto(seasonEnum.getCode(), seasonEnum.getName(), seasonEnum.ordinal(), seasonEnum.name());
-    }
-    public CodeDto toCodeDto(@NonNull YearEnum yearEnum) {
-        return getCodeDto(yearEnum.getCode(), yearEnum.getName(), yearEnum.ordinal(), yearEnum.name());
-    }
-    public CodeDto toCodeDto(@NonNull CustomerClassificationEnum customerClassificationEnum) {
-        return getCodeDto(customerClassificationEnum.getCode(), customerClassificationEnum.getName(), customerClassificationEnum.ordinal(), customerClassificationEnum.name());
-    }
-    public CodeDto toCodeDto(@NonNull GenderEnum genderEnum) {
-        return getCodeDto(genderEnum.getCode(), genderEnum.getName(), genderEnum.ordinal(), genderEnum.name());
-    }
-    public CodeDto toCodeDto(@NonNull ProductTypeEnum productTypeEnum) {
-        return getCodeDto(productTypeEnum.getCode(), productTypeEnum.getName(), productTypeEnum.ordinal(), productTypeEnum.name());
+    public UiDto.Option.KoreanSearchable toUiOption(@NonNull FairStatusEnum fairStatusEnum) {
+        return getUiOption(fairStatusEnum.name(), fairStatusEnum.ordinal(), fairStatusEnum.name());
     }
 
-    public BasicUiDto toBasicUiDto (@NonNull FairStatusEnum fairStatusEnum) {
-        return getBasicUiDto(fairStatusEnum.name(), fairStatusEnum.ordinal(), fairStatusEnum.name());
+    public abstract List<UiDto.Option.WithCode> toUiOptionWithCode(SeasonEnum[] seasonEnumList);
+    public abstract List<UiDto.Option.WithCode> toUiOptionWithCode(YearEnum[] yearEnumList);
+    public abstract List<UiDto.Option.WithCode> toUiOptionWithCode(CustomerClassificationEnum[] customerClassificationEnumList);
+    public abstract List<UiDto.Option.WithCode> toUiOptionWithCode(GenderEnum[] genderEnumList);
+    public abstract List<UiDto.Option.WithCode> toUiOptionWithCode(ProductTypeEnum[] productTypeEnumList);
+    public abstract List<UiDto.Option.KoreanSearchable> toUiOption(FairStatusEnum[] fairStatusEnumList);
+
+
+    private UiDto.Option.WithCode getUiOptionWithCode(String name, int ordinal, String note, char code) {
+        return controllerDtoConverter.toUiOptionWithCode(getUiOption(name, ordinal, note), String.valueOf(code));
     }
 
-    public abstract List<CodeDto> toCodeDto(SeasonEnum[] seasonEnumList);
-    public abstract List<CodeDto> toCodeDto(YearEnum[] yearEnumList);
-    public abstract List<CodeDto> toCodeDto(CustomerClassificationEnum[] customerClassificationEnumList);
-    public abstract List<CodeDto> toCodeDto(GenderEnum[] genderEnumList);
-    public abstract List<CodeDto> toCodeDto(ProductTypeEnum[] productTypeEnumList);
-    public abstract List<BasicUiDto> toBasicUiDto(FairStatusEnum[] fairStatusEnumList);
-
-
-    private CodeDto getCodeDto(char code, String name, int ordinal, String note) {
-        CodeDto dto = controllerDtoConverter.toCodeDto(getBasicUiDto(name, ordinal, note));
-        dto.setCode(String.valueOf(code));
-        return dto;
-    }
-
-    private BasicUiDto getBasicUiDto(String name, int ordinal, String note) {
-        BasicUiDto dto = new BasicUiDto();
-        dto.setName(name);
-        dto.setSort(String.valueOf(ordinal));
-        dto.setNote(note);
-        return dto;
+    private UiDto.Option.KoreanSearchable getUiOption(String name, int ordinal, String note) {
+        return controllerDtoConverter.toUiOption(name, String.valueOf(ordinal), note);
     }
 
 }
