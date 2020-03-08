@@ -46,13 +46,15 @@ public class ProjectInfoCreator extends DateInfoCreator {
     }
 
     public String getProjectBarcode(Project project) {
-        return  project.getYear().getCode() +
-                project.getCustomerClassification().getCode() +
-                String.format("%02d",  Integer.parseInt(project.getCustomerCompany().getCode())).substring(0, 2) +
-                project.getGender().getCode() +
-                project.getSeason().getCode() +
-                project.getProductType().getCode() +
-                String.format("%03d", project.getId()).substring(0, 3);
+        StringBuilder builder = new StringBuilder()
+            .append(project.getYear().getCode())
+            .append(project.getCustomerClassification().getCode())
+            .append(String.format("%02d",  Integer.parseInt(project.getCustomerCompany().getCode())).substring(0, 2))
+            .append(project.getGender().getCode())
+            .append(project.getSeason().getCode())
+            .append(project.getProductType().getCode())
+            .append(String.format("%03d", project.getId()).substring(0, 3));
+        return builder.toString();
 
     }
 
