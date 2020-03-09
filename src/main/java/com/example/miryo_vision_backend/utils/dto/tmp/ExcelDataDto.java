@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class ExcelDataDto {
     @JsonIgnore
     protected List<String> koNameList;
