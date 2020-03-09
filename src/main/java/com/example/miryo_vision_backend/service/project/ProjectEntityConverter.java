@@ -1,5 +1,6 @@
 package com.example.miryo_vision_backend.service.project;
 
+import com.example.miryo_vision_backend.entity.Employee;
 import com.example.miryo_vision_backend.entity.Project;
 import com.example.miryo_vision_backend.service.project.enums.*;
 import org.mapstruct.*;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-@Mapper(componentModel="spring")
+@Mapper(componentModel="spring",nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public abstract class ProjectEntityConverter {
 
     @Autowired
@@ -54,12 +55,30 @@ public abstract class ProjectEntityConverter {
         project.setPlantCode(projectInfoCreator.getProjectPlantCode(project));
     }
 
+    @Mappings({
+            @Mapping(source = "salesDepartEmployeeInChargeId", target = "salesDepartEmployeeInCharge", qualifiedByName = "setNewEmploy"),
+            @Mapping(source = "logisticsDepartEmployeeInChargeId", target = "logisticsDepartEmployeeInCharge", qualifiedByName = "setNewEmploy"),
+            @Mapping(source = "productionDepartEmployeeInChargeId", target = "productionDepartEmployeeInCharge", qualifiedByName = "setNewEmploy"),
+            @Mapping(source = "designDepartEmployeeInChargeId", target = "designDepartEmployeeInCharge", qualifiedByName = "setNewEmploy"),
+            @Mapping(source = "accountingDepartEmployeeInChargeId", target = "accountingDepartEmployeeInCharge", qualifiedByName = "setNewEmploy"),
+    })
+    public abstract void updateProject(ProjectDto.Request.Update projectUpdateRequest, @MappingTarget Project asIsProject);
 
+    // note: updateProject를 실행하기 전에 실행
+    public void updateFairResultDatetime(ProjectDto.Request.Update projectUpdateRequest, Project asIsProject){
+        if (asIsProject.getFairStatus() == FairStatusEnum.WAITING &&
+                projectUpdateRequest.getFairStatus()!= FairStatusEnum.WAITING){
+            asIsProject.setFairResultDatetime(projectInfoCreator.getCurrentDatetime());
+        }
+    }
+    @Named("setNewEmploy")
+    protected Employee setNewEmploy(Long id){
+        Employee employee = new Employee();
+        employee.setId(id);
+        return employee;
+    }
 
     public abstract ProjectDto.UiSelect.Create toUiSelectForProjectCreate(ProjectDto.UiSelect.All uiSelectForProject);
     public abstract ProjectDto.UiSelect.Search toUiSelectForProjectSearch(ProjectDto.UiSelect.All uiSelectForProject);
-
-
-
-
+    public abstract ProjectDto.UiSelect.Update toUiSelectForProjectUpdate(ProjectDto.UiSelect.All uiSelectForProject);
 }

@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 
-//todo : 모델 맵핑이 무언가 잘못됨
-
 @Service
 public class ProjectService implements CrudService<ProjectDto.Response, ProjectDto.Request.Create,ProjectDto.Request.Update,ProjectDto.Request.Delete, ProjectDto.Request.Search> {
     private ProjectRepository       projectRepository;
@@ -30,45 +28,35 @@ public class ProjectService implements CrudService<ProjectDto.Response, ProjectD
 
 
     @Override
-    public void create(ProjectDto.Request.Create projectCreateRequest) {
-        // todo: 이벤트 처리
-        Project project = projectEntityConverter.toSavableEntity(projectCreateRequest);
+    public void create(ProjectDto.Request.Create request) {
+        Project project = projectEntityConverter.toSavableEntity(request);
         project = this.projectRepository.save(project);
         projectEntityConverter.updateToCompleteEntity(project);
         this.projectRepository.save(project);
-    }
 
-    @Override
-    public void createAll(List<ProjectDto.Request.Create> projectCreateRequest) {
-        for (ProjectDto.Request.Create dto: projectCreateRequest) {
-            create(dto);
-        }
-    }
-
-
-    // todo: JPA에서 @ID를 보고 update를 해줄지 확인 필요
-    @Override
-    public void update(ProjectDto.Request.Update projectUpdateRequest) {
+        // todo: 이벤트 처리
 
     }
 
     @Override
-    public void updateAll(List<ProjectDto.Request.Update> projectUpdateRequest) {
+    public void update(ProjectDto.Request.Update projectUpdateRequest) throws Exception { // WrongIdException
+        Project project = projectRepository.findById(projectUpdateRequest.getId()).orElseThrow(()->new Exception("wrong id"));
+        projectEntityConverter.updateFairResultDatetime(projectUpdateRequest, project);
+        projectEntityConverter.updateProject(projectUpdateRequest, project);
+        this.projectRepository.save(project);
 
-    }
-
-
-    @Override
-    public void delete(ProjectDto.Request.Delete projectDeleteRequest) {
-    }
-
-    @Override
-    public void deleteAll(List<ProjectDto.Request.Delete> projectDeleteRequest) {
+        // todo: 이벤트 처리
+        //       win시 -> activate project
     }
 
     @Override
-    public List<ProjectDto.Response> search(ProjectDto.Request.Search projectSearchRequest) {
-        Predicate predicate = ProjectPredicate.search(projectSearchRequest);
+    public void delete(ProjectDto.Request.Delete request) {
+        projectRepository.deleteById(request.id);
+    }
+
+    @Override
+    public List<ProjectDto.Response> search(ProjectDto.Request.Search request) { // NonMatchException
+        Predicate predicate = ProjectPredicate.search(request);
         return projectEntityConverter.toProjectResponse(projectRepository.findAll(predicate));
     }
 
@@ -85,4 +73,7 @@ public class ProjectService implements CrudService<ProjectDto.Response, ProjectD
         return projectEntityConverter.toUiSelectForProjectSearch(projectInfoCreator.getUiSelectForProject());
     }
 
+    public ProjectDto.UiSelect.Update getProjectUpdateInitData() {
+        return projectEntityConverter.toUiSelectForProjectUpdate(projectInfoCreator.getUiSelectForProject());
+    }
 }

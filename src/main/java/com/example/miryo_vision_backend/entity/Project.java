@@ -75,16 +75,14 @@ public class Project {
     @Column(length = 20)
     private String name;
 
-    @Column(updatable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date startDatetime;
 
     @Column(length = 10)
     @Enumerated(EnumType.STRING)
     private FairStatusEnum fairStatus;
 
-    @Column(updatable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fairResultDatetime;
 
 //    private ProjectState(??) state;

@@ -17,6 +17,11 @@ import java.util.List;
 
 
 public enum ProjectDto {;
+
+    private interface Id{
+        Long getId();
+    }
+
     private interface CustomerClassification{
         CustomerClassificationEnum getCustomerClassification();
     }
@@ -135,10 +140,27 @@ public enum ProjectDto {;
         }
 
         @Data
-        public static class Update{}
+        public static class Update
+                implements Id,
+                SalesDepartEmployeeInChargeId,LogisticsDepartEmployeeInChargeId,
+                ProductionDepartEmployeeInChargeId,DesignDepartEmployeeInChargeId,
+                AccountingDepartEmployeeInChargeId,FairStatus {
+            Long id;
+
+            Long salesDepartEmployeeInChargeId;
+            Long logisticsDepartEmployeeInChargeId;
+            Long productionDepartEmployeeInChargeId;
+            Long designDepartEmployeeInChargeId;
+            Long accountingDepartEmployeeInChargeId;
+
+            FairStatusEnum fairStatus;
+        }
 
         @Data
-        public static class Delete{}
+        public static class Delete
+                implements Id {
+            Long id;
+        }
 
     }
     @Data
@@ -269,8 +291,8 @@ public enum ProjectDto {;
         public static class Search
                 implements CustomerClassificationList,YearList,GenderList,SeasonList,ProductTypeList,
                 CustomerCompanyList,SalesDepartEmployeeInChargeList,LogisticsDepartEmployeeInChargeList,
-                ProductionDepartEmployeeInChargeList,DesignDepartEmployeeInChargeList,AccountingDepartEmployeeInChargeList,
-                FairStatusList{
+                ProductionDepartEmployeeInChargeList,DesignDepartEmployeeInChargeList,
+                AccountingDepartEmployeeInChargeList, FairStatusList{
             List<UiDto.Option.WithCode> customerClassificationList;
             List<UiDto.Option.WithCode> yearList;
             List<UiDto.Option.WithCode> genderList;
@@ -278,6 +300,18 @@ public enum ProjectDto {;
             List<UiDto.Option.WithCode> productTypeList;
             List<UiDto.Option.WithIdAndCode> customerCompanyList;
 
+            List<UiDto.Option.WithId> salesDepartEmployeeInChargeList;
+            List<UiDto.Option.WithId> logisticsDepartEmployeeInChargeList;
+            List<UiDto.Option.WithId> productionDepartEmployeeInChargeList;
+            List<UiDto.Option.WithId> designDepartEmployeeInChargeList;
+            List<UiDto.Option.WithId> accountingDepartEmployeeInChargeList;
+            List<UiDto.Option.KoreanSearchable> fairStatusList;
+        }
+        @Data
+        public static class Update
+                implements SalesDepartEmployeeInChargeList,LogisticsDepartEmployeeInChargeList,
+                ProductionDepartEmployeeInChargeList,DesignDepartEmployeeInChargeList,
+                AccountingDepartEmployeeInChargeList, FairStatusList{
             List<UiDto.Option.WithId> salesDepartEmployeeInChargeList;
             List<UiDto.Option.WithId> logisticsDepartEmployeeInChargeList;
             List<UiDto.Option.WithId> productionDepartEmployeeInChargeList;
