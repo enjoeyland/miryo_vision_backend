@@ -31,9 +31,6 @@ public class CustomerCompany {
     @Column(name = "CODE",nullable = false)
     protected String code;
 
-    @Column(name = "SORT",nullable = false)
-    protected String sort;
-
     String 이름;
 
     String 고객사구분;

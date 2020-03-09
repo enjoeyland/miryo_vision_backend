@@ -6,6 +6,7 @@ import com.example.miryo_vision_backend.entity.Project;
 import com.example.miryo_vision_backend.repository.CustomerCompanyRepository;
 import com.example.miryo_vision_backend.repository.EmployeeRepository;
 import com.example.miryo_vision_backend.service.DateInfoCreator;
+import com.example.miryo_vision_backend.service.customerCompany.CustomerCompanyEntityConverter;
 import com.example.miryo_vision_backend.service.employee.EmployeeEntityConverter;
 import com.example.miryo_vision_backend.service.employee.enums.Department;
 import com.example.miryo_vision_backend.service.employee.enums.JobDuty;
@@ -23,13 +24,15 @@ public class ProjectInfoCreator extends DateInfoCreator {
     private ProjectEnumConverter projectEnumConverter;
     private EmployeeRepository employeeRepository;
     private EmployeeEntityConverter employeeEntityConverter;
+    private CustomerCompanyEntityConverter customerCompanyEntityConverter;
 
     @Autowired
-    public ProjectInfoCreator(CustomerCompanyRepository customerCompanyRepository, ProjectEnumConverter projectEnumConverter, EmployeeRepository employeeRepository, EmployeeEntityConverter employeeEntityConverter) {
+    public ProjectInfoCreator(CustomerCompanyRepository customerCompanyRepository, ProjectEnumConverter projectEnumConverter, EmployeeRepository employeeRepository, EmployeeEntityConverter employeeEntityConverter, CustomerCompanyEntityConverter customerCompanyEntityConverter) {
         this.customerCompanyRepository = customerCompanyRepository;
         this.projectEnumConverter = projectEnumConverter;
         this.employeeRepository = employeeRepository;
         this.employeeEntityConverter = employeeEntityConverter;
+        this.customerCompanyEntityConverter = customerCompanyEntityConverter;
     }
 
     public String getProjectName(Project project) {
@@ -67,7 +70,7 @@ public class ProjectInfoCreator extends DateInfoCreator {
 
     public ProjectDto.UiSelect.All getUiSelectForProject (){
         ProjectDto.UiSelect.All dto = new ProjectDto.UiSelect.All();
-        dto.setCustomerCompanyList(ModelMapperWrapper.mapAll(this.customerCompanyRepository.findAll(), UiDto.Option.WithIdAndCode.class));
+        dto.setCustomerCompanyList(customerCompanyEntityConverter.toUiOptionWithIdAndCode(this.customerCompanyRepository.findAll()));
         dto.setCustomerClassificationList(this.projectEnumConverter.toUiOptionWithCode(CustomerClassificationEnum.values()));
         dto.setYearList(this.projectEnumConverter.toUiOptionWithCode(YearEnum.values()));
         dto.setSeasonList(this.projectEnumConverter.toUiOptionWithCode(SeasonEnum.values()));

@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+@Deprecated // hint : use MapStruct. However, this util is good.
 public class ModelMapperWrapper {
 
     private static ModelMapper modelMapper;
