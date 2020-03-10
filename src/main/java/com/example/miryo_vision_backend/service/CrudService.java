@@ -12,8 +12,8 @@ public interface CrudService<Response,CreatRequest,UpdateRequest,DeleteRequest,S
             create(dto);
         }
     }
-    void update(UpdateRequest request) throws Exception;
-    default void updateAll(List<UpdateRequest> requestList) throws Exception {
+    void update(UpdateRequest request);
+    default void updateAll(List<UpdateRequest> requestList) {
         for (UpdateRequest dto: requestList) {
             update(dto);
         }

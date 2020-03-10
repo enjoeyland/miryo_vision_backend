@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table
@@ -14,7 +15,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
-@EqualsAndHashCode
 @NamedEntityGraphs({
     @NamedEntityGraph(name = "joinCustomerCompany",attributeNodes = {
         @NamedAttributeNode("customerCompany")
@@ -108,4 +108,23 @@ public class Project {
     @Column(length = 10)
     @Enumerated(EnumType.STRING)
     private ProductTypeEnum productType;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Project)) return false;
+        Project project = (Project) o;
+        return Objects.equals(getId(), project.getId()) ||
+                (Objects.equals(getCustomerCompany(), project.getCustomerCompany()) &&
+                getCustomerClassification() == project.getCustomerClassification() &&
+                getYear() == project.getYear() &&
+                getGender() == project.getGender() &&
+                getSeason() == project.getSeason() &&
+                getProductType() == project.getProductType());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
 }

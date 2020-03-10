@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "CUSTOMER_COMPANY")
@@ -13,7 +14,6 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
 public class CustomerCompany {
 
     @Id
@@ -30,8 +30,6 @@ public class CustomerCompany {
 
     @Column(name = "CODE",nullable = false)
     protected String code;
-
-    String 이름;
 
     String 고객사구분;
     String 업태;
@@ -57,4 +55,16 @@ public class CustomerCompany {
     protected String note;
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CustomerCompany)) return false;
+        CustomerCompany that = (CustomerCompany) o;
+        return Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
 }
