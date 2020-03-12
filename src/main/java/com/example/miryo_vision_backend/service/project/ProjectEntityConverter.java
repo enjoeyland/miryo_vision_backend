@@ -28,6 +28,8 @@ public abstract class ProjectEntityConverter {
     public abstract ProjectDto.Response toProjectResponse(Project project);
     public abstract List<ProjectDto.Response> toProjectResponse(List<Project> projectList);
 
+    @Mapping(target = "fairStatus", ignore = true)
+    public abstract ProjectDto.Request.Search toProjectSearchRequest(ProjectDto.Request.Create projectCreateRequest);
 
     @Mappings({
         @Mapping(source = "customerCompanyId", target = "customerCompany.id"),

@@ -5,7 +5,7 @@ import lombok.Getter;
 
 
 @Getter
-public class ServerResponse {
+public class ServerResponse<T> {
 
     private String msg; //에러나 그냥 알리고 싶은 내용 보내기
 
@@ -14,15 +14,15 @@ public class ServerResponse {
     @JsonProperty(value = "status")
     private Boolean isSuccess;
 
-    private Object data; // 실패시: null
+    private T data; // 실패시: null
 
-    public ServerResponse(Boolean isSuccess, Object data, String msg) {
+    public ServerResponse(Boolean isSuccess, T data, String msg) {
         this.isSuccess = isSuccess;
         this.data = data;
         this.msg = msg;
     }
 
-    public ServerResponse(Boolean isSuccess, Object data) {
+    public ServerResponse(Boolean isSuccess, T data) {
         this.isSuccess = isSuccess;
         this.data = data;
         this.msg = "";

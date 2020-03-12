@@ -36,13 +36,21 @@ public abstract class ControllerDtoConverter {
     @Named("toUiFilterableOption")
     public abstract Map<String, Set<UiDto.Option.Filterable>> toUiFilterableOption(Map<String, Set<String>> uiOption);
 
-    @Mappings({
-        @Mapping(source = "list", target = "dataSource"),
-        @Mapping(source = "list", target = "filterData", qualifiedByName = {"toEachFieldToSet","toUiFilterableOption"})
-    })
-    // todo: list로는 못 받는지 물어보기
-    public abstract UiDto.TableWithFilter toUiTableWithFilter(ListWrapper<? extends UiDto.TableRow.ListIndex> listWrapper);
 
+    // todo: list로는 못 받는지 물어보기
+    // todo: generic type 어떻게
+//    @Mappings({
+//            @Mapping(source = "list", target = "dataSource"),
+//            @Mapping(source = "list", target = "filterData", qualifiedByName = {"toEachFieldToSet","toUiFilterableOption"})
+//    })
+//    public abstract UiDto.TableWithFilter toUiTableWithFilter(ListWrapper<? extends UiDto.TableRow.ListIndex> listWrapper);
+    public <T extends UiDto.TableRow.ListIndex> UiDto.TableWithFilter<T> toUiTableWithFilter(ListWrapper<T> listWrapper){
+        setListIndex(listWrapper);
+        UiDto.TableWithFilter<T> tableWithFilter= new UiDto.TableWithFilter<>();
+        tableWithFilter.setDataSource(listWrapper.getList());
+        tableWithFilter.setFilterData( toUiFilterableOption(Converter.eachFieldToSet(listWrapper.getList())));
+        return tableWithFilter;
+    }
 
     @BeforeMapping
     protected void setListIndex(ListWrapper<? extends UiDto.TableRow.ListIndex> listWrapper) {

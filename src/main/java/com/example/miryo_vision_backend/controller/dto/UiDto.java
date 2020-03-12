@@ -29,8 +29,8 @@ public enum UiDto {;
     @Setter
     @ToString
     @EqualsAndHashCode
-    public static class TableWithFilter implements DataSource,FilterData{
-        List<?> dataSource;
+    public static class TableWithFilter<T extends TableRow.ListIndex> implements DataSource,FilterData{
+        List<T> dataSource;
         Map<String, Set<Option.Filterable>> filterData;
     }
 
