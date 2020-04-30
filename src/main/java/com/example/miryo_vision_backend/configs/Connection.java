@@ -1,7 +1,25 @@
 package com.example.miryo_vision_backend.configs;
 
+// caution : you have to implement this interface
+
 public interface Connection {
-    default String getDatasourceUsername() { return "<your datasource user name>";}
-    default String getDatasourcePassword() {return "<your datasource password>";}
-    default String getDBName() {return "<your datasource db name>";}
+    default String getDriverClassName() {
+        return "com.mysql.cj.jdbc.Driver";
+    }
+
+    default String getDataBaseName() {
+        return "mysql";
+    }
+    default String getUrlDomain() {
+        return "localhost";
+    }
+    default String getPort() {
+        return "3306";
+    }
+
+    String getDatasourceUsername();
+    String getDatasourcePassword();
+
+    // ex) miryo_vision_project_db
+    String getDBSchemaName();
 }

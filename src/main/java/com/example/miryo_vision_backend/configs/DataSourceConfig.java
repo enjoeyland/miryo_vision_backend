@@ -15,7 +15,7 @@ public class DataSourceConfig {
         Connection connection= new MyConnection();
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("com.mysql.cj.jdbc.Driver");
-        dataSourceBuilder.url("jdbc:mysql://localhost:3306/" + connection.getDBName() + "?serverTimezone=Asia/Seoul");
+        dataSourceBuilder.url("jdbc:mysql://localhost:3306/" + connection.getDBSchemaName() + "?serverTimezone=Asia/Seoul");
         dataSourceBuilder.username(connection.getDatasourceUsername());
         dataSourceBuilder.password(connection.getDatasourcePassword());
         return dataSourceBuilder.build();
