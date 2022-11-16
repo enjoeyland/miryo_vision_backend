@@ -21,7 +21,7 @@
         <!-- todo: 1.4.0 버전 나오면 사용하기  -->
         <mapstruct.version>1.3.1.Final</mapstruct.version>
         <querydsl.version>4.2.1</querydsl.version>
-        <jackson.version>2.10.2</jackson.version>
+        <jackson.version>2.12.7.1</jackson.version>
     </properties>
 
     <dependencies>
